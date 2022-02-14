@@ -1,15 +1,16 @@
-from transformers.modeling_camembert import CamembertForMaskedLM
-from transformers.tokenization_camembert import CamembertTokenizer
-from flaubert_model.TestCamembert import CamembertModel
+from camembert_model.camembert import CamembertModel
+from acces_donnes.service_articles import ServiceArticles
+from preprocessors.preprocessor_core_nlp import PreprocessorCoreNlp
 
 
-camembert = CamembertModel()
-camembert.Run()
+camembert = CamembertModel()    
+preprocessor = PreprocessorCoreNlp()
+preprocessor.camembert = camembert
 
-tokenizer = transformers.CamembertTokenizer.from_pretrained("camembert-base")
-model = transformers.CamembertForMaskedLM.from_pretrained("camembert-base")
+articles = ServiceArticles()
+listeArticles = articles._obtenir_articles()
+texteTest = listeArticles[0]
 
-model.eval()
+preprocessor._creer_donnees(texteTest[1])
+print('A')
 
-masked_input = "Le camembert est <mask> :)"
-print(camembert.RemplirMasque(masked_input, model, tokenizer, topk=3))

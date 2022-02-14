@@ -1,24 +1,23 @@
 import torch
+from transformers.models.camembert.modeling_camembert import CamembertForMaskedLM
+from transformers.models.camembert.tokenization_camembert import CamembertTokenizer
 
 class CamembertModel:
-    def Run(self):
-        camembert = torch.hub.load('pytorch/fairseq', 'camembert')
-        self.ExtraireCaracterisques(camembert)          
+    camembert = torch.hub.load('pytorch/fairseq', 'camembert')
+    tokenizer = CamembertTokenizer.from_pretrained("camembert-base")
+    model = CamembertForMaskedLM.from_pretrained("camembert-base")   
             
-    def Masque(self, camembert, masked_line, topk=3):
+    def _masque(self, camembert, masked_line, topk=3):
         #MLM (Masked Language Modeling) utilisé pour prévoir les mots masqués. Utiliser avec <mask>
-
-        #Exemple:
-        #masked_line = 'Le camembert est <mask> :)'
-        #camembert.fill_mask(masked_line, topk=3)
            
-        camembert.fill_mask(masked_line, topk)  
+        masked_input = "Le camembert est <mask> :)"
+        print(camembert.RemplirMasque(masked_input, self.model, self.tokenizer))
 
-    def Evaluation(self, camembert):
+    def _evaluation(self, camembert):
         #Utilisé pour évaluer et peaufiner l'entraînement
         camembert.eval()
 
-    def ExtraireCaracterisques(self, camembert):
+    def _extraire_caracterisques(self, camembert):
         #Extraire les caractéristiques de la dernière couche
         line = "J'aime le camembert !"
         tokens = camembert.encode(line)
@@ -29,8 +28,8 @@ class CamembertModel:
         all_layers = camembert.extract_features(tokens, return_all_hiddens=True)
         assert len(all_layers) == 13
 
-    def RemplirMasque(masked_input, model, tokenizer, topk=5):
-        # Adapted from https://github.com/pytorch/fairseq/blob/master/fairseq/models/roberta/hub_interface.py
+    def _remplir_masque(self, masked_input, model, tokenizer, topk=5):
+        # Adapté de https://github.com/pytorch/fairseq/blob/master/fairseq/models/roberta/hub_interface.py
         assert masked_input.count("<mask>") == 1
         input_ids = torch.tensor(tokenizer.encode(masked_input, add_special_tokens=True)).unsqueeze(0)  # Batch size 1
         logits = model(input_ids)[0]  # The last hidden-state is the first element of the output tuple
