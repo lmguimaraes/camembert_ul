@@ -2,7 +2,7 @@ import os
 import sqlite3
 
 class ServiceArticles:    
-    def ObtenirArticles(self):
+    def _obtenir_articles(self):
         listeArticles = []
         try:
             sqliteConnection = sqlite3.connect(self.fichierBD)
@@ -23,7 +23,7 @@ class ServiceArticles:
                 sqliteConnection.close()
                 print("La connexion SQLite est fermée")
 
-    def ObtenirArticleParId(self, idArticle):
+    def _obtenir_article_par_id(self, idArticle):
         try:
             sqliteConnection = sqlite3.connect(self.fichierBD)
             cursor = sqliteConnection.cursor()
