@@ -16,3 +16,4 @@ pip install bitarray
 
 pip install sacrebleu
 
+pip install protobuff

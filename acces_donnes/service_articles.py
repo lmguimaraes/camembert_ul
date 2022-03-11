@@ -12,7 +12,7 @@ class ServiceArticles:
             cursor.execute(sqlite_select_Query)
             results = cursor.fetchall()
             for result in results:
-                listeArticles.append(result)           
+                listeArticles.append(result[1])           
             cursor.close()
             return listeArticles
 
@@ -42,7 +42,7 @@ class ServiceArticles:
                 print("La connexion SQLite est fermée")            
         
     fichierBD = "{0}/news_database.sqlite".format(os.path.dirname(__file__))
-    queryObtenirArticles = "SELECT * FROM news_table"
+    queryObtenirArticles = "SELECT * FROM news_table LIMIT 10000"
     queryObtenirArticleParId = "SELECT * FROM news_table WHERE post_id = '{}'"
 
 
