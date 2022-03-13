@@ -9,7 +9,6 @@ preprocessor.camembert = camembert
 articles = ServiceArticles()
 listeArticles = articles._obtenir_articles()
 
-#preprocessor._creer_donnees(listeArticles)
 preprocessor._repondre_questions(listeArticles)
 print('A')
 
