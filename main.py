@@ -1,6 +1,6 @@
 from camembert_model.camembert import CamembertModel
 from acces_donnes.service_articles import ServiceArticles
-from preprocessors.preprocessor_core_nlp import PreprocessorCoreNlp
+from preprocessor.preprocessor_core_nlp import PreprocessorCoreNlp
 
 camembert = CamembertModel()    
 preprocessor = PreprocessorCoreNlp()

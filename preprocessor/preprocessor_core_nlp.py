@@ -1,12 +1,16 @@
 import re
-import this
 import nltk
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
-from nltk import pos_tag, word_tokenize, RegexpParser
-from typing import List
+from nltk import RegexpParser
 from transformers import AutoTokenizer, AutoModelForTokenClassification, pipeline
 from camembert_model.camembert import CamembertModel
+
+from analyse_sentiment import analyser_sentiment_texte
+from reponses_questions.evaluer_candidats import evaluer_qui
+from reponses_questions.evaluer_candidats import evaluer_ou
+from reponses_questions.evaluer_candidats import evaluer_quoi
+from preprocessor import arbre_syntaxique
 
 class PreprocessorCoreNlp:
     def _repondre_questions(self, textes):
@@ -25,14 +29,16 @@ class PreprocessorCoreNlp:
         nlp = pipeline('ner', model=model, tokenizer=tokenizer, aggregation_strategy="simple")
         for texte in textes:
             re.sub(r'http\S+', '', texte)
+            #print(analyser_sentiment_texte._analyser_sentiment_texte(texte))
             textesTraitesNER.append(nlp(texte))
         for texteTraite in textesTraitesNER:
-            print("Qui: " + self._extraire_qui(texteTraite))
-            print("Quoi: " + self._extraire_quoi(texteTraite))
-            print("Où: " + self._extraire_ou(texteTraite)+ "\n")
+            print("Qui: " + evaluer_qui._extraire_qui(texteTraite))
+            print("Quoi: " + evaluer_quoi._extraire_quoi(texteTraite))
+            print("Où: " + evaluer_ou._extraire_ou(texteTraite)+ "\n")
+            arbre_syntaxique._separer_phrases_texte(tagsTextes[syncTexte])
             arbre = chunker.parse(tagsTextes[syncTexte])
-            #print("Après extraire\n", arbre)
-            #arbre.draw()
+            print("Après extraire\n", arbre)
+            arbre.draw()
             print("---------------------------------------------------------------------------------------------------------------------------------------")
             syncTexte += 1
 
@@ -45,41 +51,35 @@ class PreprocessorCoreNlp:
             listeTags = []  
             listeMots = []
             re.sub(r'http\S+', '', texte)
-
-
             tokenized = tokenTagger(texte)
             for token in tokenized:
                 listeTags.append(token['entity_group'])
                 listeMots.append(token['word'])
             textesTraites.append(list(zip(listeMots, listeTags)))
-        return textesTraites
-
-    def _extraire_qui(self, texte):
-        reponseQui = ""
-        for attribut in texte:
-            if attribut['entity_group'] == 'PER':
-                reponseQui += attribut['word']+","
-        if not reponseQui:
-                return "Impossible déterminer"
-        return reponseQui[:-1]    
+        return textesTraites 
         
-    def _extraire_ou(self, texte):
-        reponseOu = ""
-        for attribut in texte:
-            if attribut['entity_group'] == 'LOC':
-                reponseOu += attribut['word']+","
-        if not reponseOu:
-                return "Impossible déterminer"
-        return reponseOu[:-1]   
+    
 
-    def _extraire_quoi(self, texte):
-        reponseQuoi = ""
-        for attribut in texte:
-            if attribut['entity_group'] == 'ORG':
-                reponseQuoi += attribut['word']+","
-            if attribut['entity_group'] == 'MISC':
-                reponseQuoi += attribut['word']+","
-        if not reponseQuoi:
-                return "Impossible déterminer"
-        return reponseQuoi[:-1]  
+    
+
+        #quand = moment que l'événement central de l'article se produit
+
+    
+
+    def _analyser_complexite_phrase(self, phrase):
+        test = ''
+
+        #séparer la partie 5w
+
+        #5w corpus et lead
+        #mettre en place une architecture d'apprentissage
+        #rouler le crawler avec des differents cibles
+        #mettre le doc des ref sur le cloud
+        
+        #parametres pour definir si fake news
+        #IA vs journalistique
+
+        #--mai
+        #qualité des 5w
+        #classification
 

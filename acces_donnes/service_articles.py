@@ -42,7 +42,7 @@ class ServiceArticles:
                 print("La connexion SQLite est fermée")            
         
     fichierBD = "{0}/news_database.sqlite".format(os.path.dirname(__file__))
-    queryObtenirArticles = "SELECT * FROM news_table LIMIT 100"
+    queryObtenirArticles = "SELECT * FROM news_table LIMIT 10"
     queryObtenirArticleParId = "SELECT * FROM news_table WHERE post_id = '{}'"
 
 
