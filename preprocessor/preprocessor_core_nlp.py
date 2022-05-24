@@ -63,6 +63,7 @@ class PreprocessorCoreNlp:
     
 
         #quand = moment que l'événement central de l'article se produit
+        #ajouter du traitement aux titres
 
     
 
